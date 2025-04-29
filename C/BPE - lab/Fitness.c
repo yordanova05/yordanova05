@@ -1,17 +1,17 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-
-struct Member *AddMember(struct Member **members);
-void UnderSubs(struct Member *members);
-void ReturnMembers(char numberNew[7]);
-
 struct Member{
     char names[56];
     char number[7];
     float subs;
     int code;
 };
+
+
+struct Member *AddMember(struct Member **members);
+void UnderSubs(struct Member *members);
+void ReturnMembers(char numberNew[7]);
 
 int count = 0;
 

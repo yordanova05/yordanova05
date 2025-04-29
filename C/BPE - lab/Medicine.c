@@ -2,11 +2,6 @@
 #include<stdlib.h>
 #include<string.h>
 
-struct Medicine* BeforeDate(struct Medicine *medicines,int count, char date1[8]);
-int WrittenValues(struct Medicine *medicines, int count, float minimum, float maximum);
-void DeleteMedicine(struct Medicine **medicines, int *count, char name1[50], char date1[8]);
-
-// 1 - zadacha
 struct Medicine{
     char name[31];
     char date[8];
@@ -14,6 +9,12 @@ struct Medicine{
     float price;
     int quantity;
 };
+
+struct Medicine* BeforeDate(struct Medicine *medicines,int count, char date1[8]);
+int WrittenValues(struct Medicine *medicines, int count, float minimum, float maximum);
+void DeleteMedicine(struct Medicine **medicines, int *count, char name1[50], char date1[8]);
+
+// 1 - zadacha
 
 int main(){
     FILE *fp;
