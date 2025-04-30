@@ -5,10 +5,12 @@
 struct Medicine{
     char name[31];
     char date[8];
-    char code[14];
+    char code[14];//long long code;
     float price;
     int quantity;
 };
+
+
 
 struct Medicine* BeforeDate(struct Medicine *medicines,int count, char date1[8]);
 int WrittenValues(struct Medicine *medicines, int count, float minimum, float maximum);
@@ -71,12 +73,16 @@ struct Medicine* BeforeDate(struct Medicine* medicines, int count, char date1[8]
             result[resultcount++] = medicines[i];
         }
     }
+
+    struct Medicine *medicinesnew = (struct Medicine*)realloc(result,resultcount*sizeof(struct Medicine));
+
     if ( resultcount == 0){
         free(result);
+        free(medicinesnew);
         return NULL;
     }
     else{
-        return result;
+        return medicinesnew;
     }
 
 }

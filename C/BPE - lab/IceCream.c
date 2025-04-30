@@ -9,6 +9,14 @@ struct IceCream{
     float price;
 };
 
+struct IceCream2{
+    char code[3];
+    int namelong;
+    char name[21];
+    int kg;
+    float price;
+};
+
 float MatchingFirstLetter(struct IceCream *sklad, int n, char a);
 int AddingToFile(struct IceCream *sklad, int n, float newprice, int newkg);
 void ReturnIceCream(char code1[3]);
@@ -119,9 +127,9 @@ void ReturnIceCream(char code1[3]){
     int result = ftell(fp);
     rewind(fp);
 
-    int count = result/sizeof(struct IceCream);
+    int count = result/sizeof(struct IceCream2);
 
-    struct IceCream *skladbin = (struct IceCream*)malloc(count*sizeof(struct IceCream));
+    struct IceCream2 *skladbin = (struct IceCream2*)malloc(count*sizeof(struct IceCream2));
 
     fread(skladbin,sizeof(struct IceCream), count, fp);
 

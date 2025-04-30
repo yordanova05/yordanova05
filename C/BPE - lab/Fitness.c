@@ -8,6 +8,15 @@ struct Member{
     int code;
 };
 
+struct Member2{
+    int namelong;
+    char names[56];
+    char number[7];
+    float subs;
+    int code;
+};
+
+
 
 struct Member *AddMember(struct Member **members);
 void UnderSubs(struct Member *members);
@@ -107,18 +116,18 @@ void ReturnMembers(char numberNew[7]){
 
     int result = ftell(file);
 
-    int count1 = result/sizeof(struct Member);
+    int count1 = result/sizeof(struct Member2);
 
     rewind(file);
 
-    struct Member *members = malloc(count1*sizeof(struct Member));
+    struct Member2 *members = malloc(count1*sizeof(struct Member2));
 
     if ( members == NULL ){
         printf("ERROR!");
         exit(4);
     }
 
-    fread(members, sizeof(struct Member), count1, file);
+    fread(members, sizeof(struct Member2), count1, file);
 
     for ( int i = 0; i < count1; i++ ){
         if ( strcmp(numberNew, members[i].number) == 0 ){
