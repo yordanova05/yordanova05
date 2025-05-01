@@ -34,7 +34,7 @@ int main(){
     struct IceCream *sklad = (struct IceCream*)malloc(n*sizeof(struct IceCream));
 
     if ( sklad == NULL ){
-        printf("DIDN'T SET DINAMICLY MEMORY!");
+        printf("DIDN'T SET DINAMIC MEMORY!");
         exit(1);
     }
 
@@ -130,6 +130,11 @@ void ReturnIceCream(char code1[3]){
     int count = result/sizeof(struct IceCream2);
 
     struct IceCream2 *skladbin = (struct IceCream2*)malloc(count*sizeof(struct IceCream2));
+
+    if ( skladbin == NULL ){
+        printf("ERROR WHILE SETTING DINAMIC MEMORY!");
+        exit(5);
+    }
 
     fread(skladbin,sizeof(struct IceCream), count, fp);
 

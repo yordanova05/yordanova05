@@ -135,6 +135,11 @@ void PrintAuthoMatching(char authornew[31]){
 
     struct PictureFull *picturesbin = (struct PictureFull*)malloc(count*sizeof(struct PictureFull));
 
+    if ( picturesbin == NULL ){
+        printf("ERROR WHILE SETTING DINAMIC MEMORY!");
+        exit(5);
+    }
+
     fread(picturesbin, count, sizeof(struct PictureFull), fp);
 
     for ( int i = 0; i < count; i++ ){

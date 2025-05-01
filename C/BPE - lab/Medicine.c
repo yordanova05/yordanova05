@@ -65,6 +65,12 @@ struct Medicine* BeforeDate(struct Medicine* medicines, int count, char date1[8]
 
     sscanf(date1, "%d.%d", &newmonth, &newyear);
     struct Medicine *result = (struct Medicine*)malloc(count*sizeof(struct Medicine));
+
+    if ( result == NULL ){
+        printf("DIDN'T SET DINAMIC MEMORY!");
+        exit(3);
+    }
+
     int resultcount = 0;
 
     for ( int i = 0; i < count; i++ ){
@@ -75,6 +81,11 @@ struct Medicine* BeforeDate(struct Medicine* medicines, int count, char date1[8]
     }
 
     struct Medicine *medicinesnew = (struct Medicine*)realloc(result,resultcount*sizeof(struct Medicine));
+
+    if ( medicinesnew == NULL ){
+        printf("DIDN'T SET DINAMIC MEMORY!");
+        exit(4);
+    }
 
     if ( resultcount == 0){
         free(result);
@@ -124,20 +135,21 @@ void DeleteMedicine(struct Medicine **medicines,int *count, char name1[50], char
                 (*medicines)[y] = (*medicines)[y + 1];
             }
             newcount--;
+            break;
         }
     }
     if ( newcount < *count ){
         struct Medicine *temp = realloc(*medicines,(newcount)*sizeof(struct Medicine));
         if ( temp == NULL ){
-            printf("Neuspeshno zadelena pamet!");
-            return;
+            printf("DIDN'T SET DINAMIC MEMORY!");
+            return ;
         }
-        printf("Uspeshno iztrito lekarstvo!");
+        printf("Succesfully deleted medicine!");
         *medicines = temp;
         *count = newcount;
     }
     else{
-        printf("Nqma namereno lekarstvo!");
+        printf("Medicine not found!");
     }
 }
 
