@@ -9,17 +9,9 @@ struct IceCream{
     float price;
 };
 
-struct IceCream2{
-    char code[3];
-    int namelong;
-    char name[21];
-    int kg;
-    float price;
-};
-
 float MatchingFirstLetter(struct IceCream *sklad, int n, char a);
 int AddingToFile(struct IceCream *sklad, int n, float newprice, int newkg);
-void ReturnIceCream(char code1[3]);
+int ReturnIceCream(char code1[3]);
 
 int main(){
     int n;
@@ -112,9 +104,10 @@ int AddingToFile(struct IceCream *sklad, int n, float newprice, int newkg){
     }
 }
 
-void ReturnIceCream(char code1[3]){
+int ReturnIceCream(char code1[3]){
     FILE *fp;
-    int truee = 0;
+    struct IceCream values;
+    int sizeofstring = 0;
 
     fp = fopen("icecream.bin", "rb");
 
@@ -123,34 +116,33 @@ void ReturnIceCream(char code1[3]){
         exit(4);
     }
 
-    fseek(fp, 0, SEEK_END);
-    int result = ftell(fp);
-    rewind(fp);
+    while(1){
 
-    int count = result/sizeof(struct IceCream2);
+        fread(&values.code, sizeof(char)*2, 1, fp );
+        if (feof(fp))  break;
+        values.code[2] = '\0';
 
-    struct IceCream2 *skladbin = (struct IceCream2*)malloc(count*sizeof(struct IceCream2));
+        fread(&sizeofstring, sizeof(int), 1, fp );
 
-    if ( skladbin == NULL ){
-        printf("ERROR WHILE SETTING DINAMIC MEMORY!");
-        exit(5);
-    }
+        fread(values.name, sizeof(char)*sizeofstring, 1,fp );
+        values.name[sizeofstring] = '\0';
 
-    fread(skladbin,sizeof(struct IceCream), count, fp);
+        fread(&values.kg, sizeof(int), 1, fp );
 
-    for ( int  i = 0; i < count; i++ ){
-        if ( strcmp( skladbin[i].code, code1) == 0 ){
-            printf("Founded icecream with code: %s; len: %d; name: %s; kg: %d; price: %f",
-                   skladbin[i].code, strlen(skladbin[i].name), skladbin[i].name, skladbin[i].kg, skladbin[i].price);
-            truee = 1;
+        fread(&values.price, sizeof(float), 1, fp );
+
+        if (strcmp(values.code,code1)==0) {
+            printf("====================\n");
+            printf("IceCream - %s\n",values.name);
+            printf("Price - %.2f BGN\n",values.price);
+            printf("====================\n");
+            fclose(fp);
+            return 1;
         }
     }
-    if ( truee == 0 ){
-        printf("NOT FOUNDED ICECREAMS WITH THAT CODE!");
-    }
-    fclose(fp);
-    free(skladbin);
 
+    fclose(fp);
+    return 0;
 }
 
 
