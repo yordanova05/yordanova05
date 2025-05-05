@@ -9,15 +9,6 @@ struct Picture{
     float price;
 };
 
-struct PictureFull{
-    short int code;
-    int authorlong;
-    char author[31];
-    int namelong;
-    char name[31];
-    float price;
-};
-
 float AveragePrice(struct Picture *pictures, int n, float newprice);
 int WrittenValues(struct Picture *pictures, int n, char a);
 void PrintAuthoMatching(char authornew[31]);
@@ -108,6 +99,8 @@ int WrittenValues( struct Picture *pictures, int n, char a){
         }
     }
 
+    fclose(fp);
+
     if ( count == 0){
         return 0;
     }
@@ -118,7 +111,6 @@ int WrittenValues( struct Picture *pictures, int n, char a){
 
 void PrintAuthoMatching(char authornew[31]){
     FILE *fp;
-    int truee = 0;
 
     fp = fopen("picture.bin","rb");
 
@@ -127,30 +119,39 @@ void PrintAuthoMatching(char authornew[31]){
         exit(4);
     }
 
-    fseek(fp, 0, SEEK_END);
-    int bytes = ftell(fp);
-    rewind(fp);
+    struct Picture picturesbin;
+    int sizeauthor = 0, sizename = 0;
 
-    int count = bytes/sizeof(struct PictureFull);
+    while ( fread(&picturesbin.code, sizeof(short int), 1 , fp)){
+        if ( feof(fp) )break;
 
-    struct PictureFull *picturesbin = (struct PictureFull*)malloc(count*sizeof(struct PictureFull));
+        if ( fread(&sizeauthor, sizeof(int), 1, fp) != 1){
+            exit(4);
+        }
 
-    if ( picturesbin == NULL ){
-        printf("ERROR WHILE SETTING DINAMIC MEMORY!");
-        exit(5);
-    }
+        if ( fread(&picturesbin.author, sizeof(char)*sizeauthor, 1, fp) != 1){
+            exit(4);
+        }
+        picturesbin.author[sizeauthor] = '\0';
 
-    fread(picturesbin, count, sizeof(struct PictureFull), fp);
+        if ( fread(&sizename, sizeof(int), 1, fp) != 1){
+            exit(4);
+        }
 
-    for ( int i = 0; i < count; i++ ){
-        if ( strcmp( picturesbin[i].author, authornew) == 0){
-            printf("Picture title: %s\nPrice: %.2fBGN\n",picturesbin[i].name, picturesbin[i].price);
-            truee++;
+        if( fread(&picturesbin.name, sizeof(char)*sizename, 1, fp) != 1){
+            exit(4);
+        }
+        picturesbin.name[sizename] = '\0';
+
+        if ( fread(&picturesbin.price, sizeof(float), 1, fp) != 1){
+            exit(4);
+        }
+
+        if ( strcmp( picturesbin.author, authornew) == 0){
+            printf("Picture title: %s\nPrice: %.2fBGN\n",picturesbin.name, picturesbin.price);
         }
     }
-    if ( truee == 0 ){
-        printf("PRICTURES NOT FOUND!");
-    }
+
     fclose(fp);
 }
 
