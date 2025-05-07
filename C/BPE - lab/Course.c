@@ -23,12 +23,10 @@ int main(){
         exit(1);
     }
 
-    int n = 0;
-    fread(&n, sizeof(int), 1, fp);
-    if( n == 0 ){
-        printf("COURSES NOT FOUND!");
-        exit(2);
-    }
+    fseek(fp, 0, SEEK_END);
+    int bytes = ftell(fp);
+    rewind(fp);
+    int n = bytes/sizeof(struct Course);
 
     struct Course *courses = (struct Course*)calloc(n, sizeof(struct Course));
     if (courses == NULL){
@@ -46,6 +44,14 @@ int main(){
     }
 
     fclose(fp);
+
+    for ( int i = 0; i < n - 1; i++ ){
+        for ( int y = i + 1; y < n; y++ ){
+            if ( strcmp(courses[i].name, courses[y].name) == 0 && strcmp(courses[i].date, courses[y].date)){
+                printf("DOUBLE COURSE!");
+            }
+        }
+    }
 
     ReducedCourse(courses, n, 3);
 
@@ -111,7 +117,7 @@ struct Course* NewCourses(struct Course **courses, int *n, char name1[51], char 
     int newcount = *n;
 
     for ( int i = 0; i < *n; i++ ){
-        if ( strcmp((*courses)[i].name, name1) == 0 && strcmp((*courses)[i].date, date1) == 0){
+        if ( strcmp(courses[i]->name, name1) == 0 && strcmp(courses[i]->date, date1) == 0){
             for ( int y = i; y < newcount; y++ ){
                 (*courses)[y] = (*courses)[y+1];
             }
@@ -131,6 +137,7 @@ struct Course* NewCourses(struct Course **courses, int *n, char name1[51], char 
 
        *courses = temp;
        *n = newcount;
+       return *courses;
     }
     else{
         return NULL;
