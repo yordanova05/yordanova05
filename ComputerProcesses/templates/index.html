@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <meta http-equiv="refresh" content="0; URL=/process">
+        <title>Computer Processes</title>
+        <link rel = "stylesheet" href = "style.css">
+    </head>
+    <body>
+        <header>
+            <div class = "container-header">
+                <h1>Computer Processes</h1>
+            </div>
+        </header>
+        <main>
+            <h1>Results: </h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>PID</th>
+                        <th>Name</th>
+                        <th>CPU %</th>
+                        <th>Memory %</th>
+                        <th>Status</th>
+                        <th>PPID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for p in processes%}
+                    <tr>
+                        <td>{{ p.pid }}</td>
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.cpu_percent }}</td>
+                        <td>{{ p.memory_percent }}</td>
+                        <td>{{ p.status }}</td>
+                        <td>{{ p.ppid }}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </main>
+    </body>
+</html>
