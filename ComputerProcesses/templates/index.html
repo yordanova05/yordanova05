@@ -1,8 +1,7 @@
 <html>
     <head>
-        <meta http-equiv="refresh" content="0; URL=/process">
         <title>Computer Processes</title>
-        <link rel = "stylesheet" href = "style.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
         <header>
@@ -11,8 +10,49 @@
             </div>
         </header>
         <main>
-            <h1>Results: </h1>
-            <table>
+            <div class="container-inputs">
+                <div>
+                    <h3>Seconds: </h3>
+                    <input type = "number" min="1" id = "seconds" name="seconds">
+                </div>
+                
+                <div>
+                    <h3>Enter filter name: </h3>
+                    <input type = "text" id = "filtername" name = "filter_name">
+                </div>
+                
+                <div>
+                    <h3>Sorted by: </h3>
+                    <select id = "sorted" name = "sorted_by">
+                        <option value = "pid">PID</option>
+                        <option value = "name">Name</option>
+                        <option value = "cpu_percent">CPU</option>
+                        <option value = "memory_percent">Memory</option>
+                        <option value = "status">Status</option>
+                        <option value = "ppid">PPID</option>
+                        <option value = "none">None</option>
+                    </select>
+                </div>
+                <div>
+                    <h3>Order: </h3>
+                    <select id = "order" name="order">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+                    
+                <div>
+                    <h3>PPID: </h3>
+                    <input type="number" min="0" id="ppid" name="ppid">
+                    
+                </div>
+                <button id="result" name="result">Result</button>
+                <button id="clear" name="clear">Clear</button>
+            </div>
+            <br>
+            <h3>It will take a while to load!</h3>
+            <div id="container-table">
+                <table>
                 <thead>
                     <tr>
                         <th>PID</th>
@@ -23,19 +63,21 @@
                         <th>PPID</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id = "table-body">
                     {%for p in processes%}
-                    <tr>
+                        <tr>
                         <td>{{ p.pid }}</td>
                         <td>{{ p.name }}</td>
-                        <td>{{ p.cpu_percent }}</td>
-                        <td>{{ p.memory_percent }}</td>
+                        <td>{{ round(p.cpu_percent,2) }}</td>
+                        <td>{{ round(p.memory_percent,2) }}</td>
                         <td>{{ p.status }}</td>
-                        <td>{{ p.ppid }}</td>
-                    </tr>
+                        <td>{{ p.ppid }}</td> 
+                        </tr>
                     {%endfor%}
                 </tbody>
-            </table>
+            </table> 
+            </div>
         </main>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
     </body>
 </html>
