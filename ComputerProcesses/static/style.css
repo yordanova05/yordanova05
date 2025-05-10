@@ -11,6 +11,7 @@ body{
     background-repeat:repeat-y;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     position: relative;
 }
 
@@ -86,4 +87,14 @@ main{
     border: 1px solid black;
     text-align: center;
     padding: 8px;
+}
+
+.anomal-class{
+    background-color: red;
+}
+
+.no-data-message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
