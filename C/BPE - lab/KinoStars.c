@@ -14,7 +14,7 @@ int count = 0;
 
 void AddNewArtist(struct Star **stars);
 struct Star* ReturnCertainIncomeArtistArray(struct Star *stars, long int income);
-struct Star* WrittenTextfile(char namefile[50]);
+struct Star* WrittenTextfile();
 
 int main(){
 
@@ -23,7 +23,7 @@ int main(){
     AddNewArtist(&stars);
     struct Star *startsincomesover = ReturnCertainIncomeArtistArray(stars, 2000000);
 
-    struct Star* values = WrittenTextfile("stars.txt");
+    struct Star* values = WrittenTextfile();
 
 }
 
@@ -90,46 +90,43 @@ struct Star* ReturnCertainIncomeArtistArray(struct Star *stars, long int income)
     return newstars;
 }
 
-struct Star* WrittenTextfile(char *filename) {
-    FILE *fp = fopen(filename, "r");
-    if (fp == NULL) {
-        printf("Error opening file!\n");
-        exit(1);
-    }
-
+struct Star* WrittenTextfile() {
     int capacity = 10;
     int read_count = 0;
-
     struct Star *stars = malloc(capacity * sizeof(struct Star));
+
     if (stars == NULL) {
-        printf("ERROR WHYLE SETTING DINAMIC MEMORY!\n");
-        fclose(fp);
+        printf("ERROR WHILE SETTING DYNAMIC MEMORY!\n");
         exit(2);
     }
 
-    while (fgets(stars[read_count].name, sizeof(stars[read_count].name), fp)) {
-        stars[read_count].name[strcspn(stars[read_count].name, "\n")] = 0;
+    FILE *fp = fopen("stars.txt", "r");
+    if (!fp) {
+        printf("Cannot open file!\n");
+        exit(1);
+    }
 
-        fscanf(fp, "%d\n", &stars[read_count].age);
-        fgets(stars[read_count].country, sizeof(stars[read_count].country), fp);
-        stars[read_count].country[strcspn(stars[read_count].country, "\n")] = 0;
-
-        fscanf(fp, "%f\n", &stars[read_count].incomes);
-        fscanf(fp, "%d\n", &stars[read_count].oscars);
-
-        (read_count)++;
-
+    char line[256];
+    while (fgets(line, sizeof(line), fp)) {
         if (read_count >= capacity) {
             capacity *= 2;
             stars = realloc(stars, capacity * sizeof(struct Star));
             if (stars == NULL) {
-                printf("ERROR WHYLE SETTING DINAMIC MEMORY!\n");
+                printf("ERROR WHILE SETTING DYNAMIC MEMORY!\n");
                 fclose(fp);
                 exit(3);
             }
         }
+
+        sscanf(line, "%[^;];%d;%[^;];%f;%d",
+               stars[read_count].name,
+               &stars[read_count].age,
+               stars[read_count].country,
+               &stars[read_count].incomes,
+               &stars[read_count].oscars);
+
+        read_count++;
     }
 
     fclose(fp);
-    return stars;
 }

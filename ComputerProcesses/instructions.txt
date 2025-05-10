@@ -1,0 +1,22 @@
+❗❗❗HOW TO OPEN❗❗❗
+
+(❗first option)
+
+1 - open terminal and install requirements.txt
+    pip install -r requirements.txt
+2 - run the app
+    python app.py
+3 - open the http://...:5000
+
+(❗second option)
+
+from github:
+
+1 - clone repo
+2 - enter folder
+3 - type:
+    cat Dockerfile
+
+from Docker:
+
+open Docker
