@@ -8,16 +8,6 @@ struct Member{
     int code;
 };
 
-struct Member2{
-    int namelong;
-    char names[56];
-    char number[7];
-    float subs;
-    int code;
-};
-
-
-
 struct Member *AddMember(struct Member **members);
 void UnderSubs(struct Member *members);
 void ReturnMembers(char numberNew[7]);
@@ -68,7 +58,7 @@ struct Member *AddMember(struct Member** members){
             exit(2);
         }
 
-        fprintf(fp, "%d;%s;%s;%f;%d",strlen(temp[count-1].names),
+        fprintf(fp, "%d;%s;%s;%f;%d\n",strlen(temp[count-1].names),
                                     temp[count-1].names,
                                     temp[count-1].number,
                                     temp[count-1].subs,
@@ -112,29 +102,20 @@ void ReturnMembers(char numberNew[7]){
         exit(3);
     }
 
-    fseek(file,0, SEEK_END);
+    struct Member memberss;
+    int Sizename = 0;
 
-    int result = ftell(file);
+    while ( fread(&Sizename, sizeof(int), 1, file) ){
+        fread(&memberss.names, sizeof(Sizename), 1, file);
+        fread(&memberss.number, sizeof(char)*7, 1, file);
+        fread(&memberss.subs, sizeof(float), 1, file);
+        fread(&memberss.code, sizeof(int), 1, file);
 
-    int count1 = result/sizeof(struct Member2);
-
-    rewind(file);
-
-    struct Member2 *members = malloc(count1*sizeof(struct Member2));
-
-    if ( members == NULL ){
-        printf("ERROR!");
-        exit(4);
-    }
-
-    fread(members, sizeof(struct Member2), count1, file);
-
-    for ( int i = 0; i < count1; i++ ){
-        if ( strcmp(numberNew, members[i].number) == 0 ){
-            printf("Bin Names: %s\nBin ID: %s\nBin M_Price: %f\nBin Locker: %d",members[i].names,
-                                                                                members[i].number,
-                                                                                members[i].subs,
-                                                                                members[i].code);
+        if ( strcmp(numberNew, memberss.number) == 0 ){
+            printf("Bin Names: %s\nBin ID: %s\nBin M_Price: %f\nBin Locker: %d",memberss.names,
+                                                                                memberss.number,
+                                                                                memberss.subs,
+                                                                                memberss.code);
             break;
         }
     }
