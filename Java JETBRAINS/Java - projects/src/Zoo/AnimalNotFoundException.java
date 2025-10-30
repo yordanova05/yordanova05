@@ -1,7 +1,7 @@
 package Zoo;
 
-public class AnimalNotFoundExeption extends Exception {
-    public AnimalNotFoundExeption(String message) {
+public class AnimalNotFoundException extends Exception {
+    public AnimalNotFoundException(String message) {
         super(message);
     }
 }

@@ -1,4 +1,7 @@
-﻿package week5;
+package week5;
 
-public class InvalidGradeException {
+public class InvalidGradeException extends Exception{
+    public InvalidGradeException(String message){
+        super(message);
+    }
 }
